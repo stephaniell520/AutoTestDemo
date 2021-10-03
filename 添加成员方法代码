@@ -1,0 +1,10 @@
+from test_demo.page_Object.IndexPage import IndexPage
+
+
+class TestAddMembers:
+    # 添加成员方法
+    def test_add_members(self):
+        # 首页页面对象实例化
+        self.index = IndexPage()
+        # 添加成员
+        self.MailsList = self.index.goto_AddMembersPage().AddMembers().get_Members()
