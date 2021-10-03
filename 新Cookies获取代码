@@ -1,0 +1,29 @@
+import yaml
+import time
+from selenium import webdriver
+
+
+class TestFindCookie:
+    def test_GetCookie(self):
+        # 登录企业微信网站
+        self.driver = webdriver.Firefox()
+        self.driver.get("https://work.weixin.qq.com/wework_admin/loginpage_wx")
+        # 人工扫码 #
+        time.sleep(20)
+        # 登录成功后，第一次获取cookie
+        self.cookie = self.driver.get_cookies()
+        # 将cookie保存在yaml文件
+        with open("../page_Object/cookie.yaml", "w") as f:
+            # 第一个参数要写入的数据
+            yaml.safe_dump(self.cookie, f)
+
+    # 添加cookie
+    def test_AddCookie(self):
+        # 进入企业微信首页
+        self.driver = webdriver.Firefox()
+        self.driver.get("https://work.weixin.qq.com/wework_admin/frame#index")
+        # 使用test_yaml.py文件里的cookie
+        self.cookie = yaml.safe_load(open("../page_Object/cookie.yaml"))
+        for c in self.cookie:
+            self.driver.add_cookie(c)
+        self.driver.refresh()
