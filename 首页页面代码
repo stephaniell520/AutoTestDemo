@@ -1,0 +1,22 @@
+from selenium.webdriver.common.by import By
+from test_demo.page_Object.base_page import BasePage
+
+
+class IndexPage(BasePage):
+    # 跳转到通讯录页面
+    def goto_ContactPage(self):
+        # 导入通讯录页面对象的类包
+        from test_demo.page_Object.ContactPage import ContactPage
+        # 查找页面通讯录元素对应属性和属性值
+        self.driver.find_element(By.ID, "menu_contacts").click()
+        # 返回通讯录页面实例对象
+        return ContactPage(self.driver)
+
+    # 跳转到添加成员页面
+    def goto_AddMembersPage(self):
+        # 导入添加成员页面对象类包
+        from test_demo.page_Object.AddMembersPage import AddMembersPage
+        # 查找页面添加成员元素对应属性和属性值
+        self.driver.find_element(By.CSS_SELECTOR, ".index_service_cnt_itemWrap").click()
+        # 返回添加成员页面实例对象
+        return AddMembersPage(self.driver)
