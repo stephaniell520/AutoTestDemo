@@ -1,0 +1,24 @@
+import yaml
+import time
+from selenium import webdriver
+from selenium.webdriver.remote.webdriver import WebDriver
+
+
+class BasePage:
+    # 构造方法
+    def __init__(self, driver: WebDriver = None):
+        # 这里支持传入一个driver参数，方便PO多页面跳转的时候接力传递。
+        if driver is None:
+            # 启动浏览器
+            self.driver = webdriver.Firefox()
+            self.driver.get("https://work.weixin.qq.com/wework_admin/frame#index")
+            # 使用cookie.yaml.py文件里的cookie
+            self.cookie = yaml.safe_load(open("../page_Object/cookie.yaml"))
+            self.driver.implicitly_wait(3)
+            for c in self.cookie:
+                self.driver.add_cookie(c)
+            time.sleep(3)
+            self.driver.get("https://work.weixin.qq.com/wework_admin/frame#index")
+        else:
+            # driver初始化
+            self.driver = driver
