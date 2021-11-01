@@ -1,0 +1,74 @@
+import requests
+
+
+class TestCorpTag:
+    def setup(self):
+        # 获取access_token
+        corpid = "ww75abb8519b57cec6"
+        corpsecret = "vvavK-3lew1LhtP2sLdfkie0Ee8CJy5hJpdJ2ceKiEI"
+        url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
+        params = {
+            "corpid":corpid,
+            "corpsecret":corpsecret
+        }
+        r = requests.get(url,params=params)
+
+    def test_get_corptag_list(self):
+        # 获取客户标签详情
+        corptag_url = f"https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_corp_tag_list?access_token={self.access_token}"
+        r = requests.get(corptag_url)
+        print(r.json())
+        assert r.json().get("errcode") == 0
+
+    def test_create_corptag(self):
+        # 创建客户标签
+        time = int(time.time())
+        # name = threading.Thread.__name__
+        create_url = f"https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_corp_tag?access_token={self.access_token}"
+        data = {
+            "group_id": f"TAG_GROUP_ID1_{time}",
+            "group_name": f"GROUP_NAME1_{time}",
+            "order": 1,
+            "tag": [{
+                "name": f"TAG_NAME1_{time}",
+                "order": 1
+            },
+                {
+                    "name": f"TAG_NAME2_{time}",
+                    "order": 2
+                }
+            ],
+            "agentid" : 1000014
+        }
+        r = requests.post(create_url,json = data)
+        print(r.json())
+        assert r.json().get("errcode") == 0
+
+    def test_update_corptag(self):
+        # 修改客户标签
+        time = int(time.time())
+        r = self.create()
+        assert r.json().get("errcode") == 0
+        update_url = f"https://qyapi.weixin.qq.com/cgi-bin/externalcontact/edit_corp_tag?access_token={self.access_token}"
+        data = {
+            "id": r.json().get("tag_group.tag.id"),
+            "name": f"NEW_GROUP_NAME1_{time}",
+            "order": 1,
+            "agentid" : 1000014
+        }
+        r = requests.post(update_url,json = data)
+        print(r.json())
+        assert r.json().get("errcode") == 0
+
+    def test_delete_corptag(self):
+        # 删除客户标签
+        r = self.create()
+        assert r.json().get("errcode") == 0
+        delete_url = f"https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_corp_tag?access_token={self.access_token}"
+        data = {
+            "group_id": r.json().get("tag_group.group_id"),
+            "agentid" : 1000014
+        }
+        r = requests.post(delete_url,json = data)
+        print(r.json())
+        assert r.json().get("errcode") == 0
