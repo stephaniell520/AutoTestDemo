@@ -1,0 +1,16 @@
+from appium import webdriver
+
+
+class TestLogin:
+    def login(self):
+        # desired capability参数配置
+        caps = {}
+        caps["platformName"] = "Android"
+        caps["deviceName"] = "test"
+        caps["appPackage"] = "com.tencent.wework"
+        caps["appActivity"] = ".launch.LaunchSplashActivity"
+        caps["noReset"] = "true"
+        caps['setting[waitForIdTimeout]'] = 0
+        # 启动企业微信
+        self.driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
+        self.driver.implicitly_wait(3)
