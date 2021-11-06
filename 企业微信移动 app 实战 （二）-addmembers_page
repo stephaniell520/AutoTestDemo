@@ -1,0 +1,22 @@
+from appium.webdriver.common.mobileby import MobileBy
+from basepage import BasePage
+
+
+class AddMembersPage(BasePage):
+    # 跳转到联系信息输入页面
+
+    def AddMembers(self):
+        from page_object.contact_page import ContactPage
+        # 输入姓名和手机号
+        self.driver.find_element(MobileBy.ID, 'com.tencent.wework:id/bf_]').send_keys(name)
+        self.driver.find_element(MobileBy.ID, 'com.tencent.wework:id/ge4]').send_keys(phone)
+        # 手机输入页面查找保存元素
+        self.driver.find_element(MobileBy.XPATH, '//*[@text="保存"]').click()
+        # 添加成功确认
+        self.driver.find_element(MobileBy.XPATH, '//*[@text="添加成功"]')
+        # 返回通讯录页面实例对象
+        return ContactPage(self.driver)
+
+
+
+
